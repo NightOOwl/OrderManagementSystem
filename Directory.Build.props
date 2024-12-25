@@ -1,0 +1,9 @@
+<Project>
+	<PropertyGroup>
+		<!-- Путь к проекту с миграциями -->
+		<EFProjectPath>./CatalogService/src/CatalogService.Infrastructure/Persistence</EFProjectPath>
+
+		<!-- Путь к стартовому проекту (API) -->
+		<StartupProjectPath>./CatalogService/src/CatalogService.Api</StartupProjectPath>
+	</PropertyGroup>
+</Project>

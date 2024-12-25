@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using CSharpFunctionalExtensions;
 namespace CatalogService.Domain.Entities
 {
-    internal class Product
+    public class Product: Entity
     {
+        private Product()
+        {
+            
+        }
+        public string Name { get; set; } = null!;
+        public string? Description { get; set; } = default;
+        public Category? Category { get; set; } = default;
+        public decimal Price { get; set; }
+        public int InStock { get; set; }
+        public DateTime CreateDateUtc { get; set; }
+        public DateTime UpdateDateUtc { get; set; }
     }
 }
