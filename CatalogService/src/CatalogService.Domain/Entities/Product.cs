@@ -3,10 +3,6 @@ namespace CatalogService.Domain.Entities
 {
     public class Product: Entity
     {
-        private Product()
-        {
-            
-        }
         public string Name { get; set; } = null!;
         public string? Description { get; set; } = default;
         public Category? Category { get; set; } = default;
