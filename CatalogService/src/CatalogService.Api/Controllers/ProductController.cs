@@ -1,6 +1,5 @@
 ﻿using CatalogService.Application.DTOs;
-using CatalogService.Domain.Entities;
-using CatalogService.Infrastructure.Interfaces;
+using CatalogService.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogService.Api.Controllers
@@ -9,11 +8,11 @@ namespace CatalogService.Api.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IProductService _productService;
 
-        public ProductsController(IProductRepository productRepository)
+        public ProductsController(IProductService productService)
         {
-            _productRepository = productRepository;
+            _productService = productService;
         }
 
         [HttpPost]
@@ -23,15 +22,16 @@ namespace CatalogService.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             var product = productDto.ToProduct();
-            await _productRepository.CreateAsync(product, cancellationToken);
+            await _productService.CreateAsync(product, cancellationToken);
             return Ok(product);
         }
 
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetProductById(long id, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetProductByIdAsync(id, cancellationToken);
+            var product = await _productService.GetProductByIdAsync(id, cancellationToken);
             return Ok(product);
         }
 

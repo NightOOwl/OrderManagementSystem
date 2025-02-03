@@ -9,9 +9,8 @@ namespace CatalogService.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.ToTable("Categories");
+            builder.ToTable("Categories").HasKey(c => c.Id);
 
-            builder.HasKey(c => c.Id);
             builder.Property(c => c.Id).HasColumnName("CategoryID");
 
             builder.Property(c => c.Name)
