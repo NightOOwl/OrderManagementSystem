@@ -5,8 +5,9 @@ namespace CatalogService.Domain.Entities
     public class Category : Entity
     {
         public string Name { get; set; } = null!;
-        public IEnumerable<Category>? Subcategories { get; set; } = default;
-        public Category? ParentCategory { get; set; } = default;
-        public IEnumerable<Product>? Products = default;
+        public ICollection<Category> Subcategories { get; set; } = new List<Category>();
+        public int? ParentCategoryId { get; set; } 
+        public Category? ParentCategory { get; set; } 
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

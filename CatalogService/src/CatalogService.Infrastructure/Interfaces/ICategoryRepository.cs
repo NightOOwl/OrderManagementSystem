@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatalogService.Application.Interfaces
+namespace CatalogService.Infrastructure.Interfaces
 {
-    internal class IProductRepository
+    public class ICategoryRepository
     {
     }
 }
