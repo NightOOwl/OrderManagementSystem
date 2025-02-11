@@ -8,11 +8,11 @@ namespace CatalogService.Application.Validations
         public ProductCreateValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Название продукта обязательно")
-                .MaximumLength(100).WithMessage("Название не должно превышать 100 символов");
+                .NotEmpty().WithMessage("Name is required.")
+                .MaximumLength(100).WithMessage("Name is too long.");
 
             RuleFor(x => x.Description)
-                .MinimumLength(1000).WithMessage("Описание не должно превышать 1000 символов");
+                .MaximumLength(1000).WithMessage("Description is too long.");
 
             RuleFor(x => x.Price)
                 .GreaterThan(0);

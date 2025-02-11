@@ -41,9 +41,9 @@ namespace CatalogService.Application.Services
             }
         }
 
-        public async Task<Product?> GetProductByIdAsync(long productId, CancellationToken cancellationToken)
+        public async Task<Product?> GetByIdAsync(long productId, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetProductByIdAsync(productId, cancellationToken);
+            var product = await _productRepository.GetByIdAsync(productId, cancellationToken);
             if (product == null)
             {
                 _logger.LogWarning($"Product with ID {productId} not found.");
@@ -51,10 +51,15 @@ namespace CatalogService.Application.Services
             return product;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync(long categoryId, int page, int pageSize, CancellationToken cancellationToken)
+        public async Task<ICollection<Product>> GetAsync(long categoryId, int page, int pageSize, CancellationToken cancellationToken)
         {
-            var products = await _productRepository.GetProductsAsync(categoryId, page, pageSize, cancellationToken);
+            var products = await _productRepository.GetPortionAsync(categoryId, page, pageSize, cancellationToken);
             return products;
+        }
+
+        public async Task<int> GetTotalCountAsync(long categoryId, CancellationToken cancellationToken)
+        {
+            return await _productRepository.GetTotalCountAsync(categoryId, cancellationToken);  
         }
 
         public async Task UpdateAsync(Product product, CancellationToken cancellationToken)

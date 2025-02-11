@@ -2,7 +2,6 @@
 using CatalogService.Infrastructure.Interfaces;
 using CatalogService.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace CatalogService.Infrastructure.Repositories
 {
@@ -26,25 +25,32 @@ namespace CatalogService.Infrastructure.Repositories
             var productToDelete = await _context.Products.FindAsync(productId, cancellationToken);
             if (productToDelete == null)
             {
-                throw new KeyNotFoundException($"Product with ID {productId} not found.");
+                throw new KeyNotFoundException($"Product with ID {productId} not exists.");
             }
 
             _context.Products.Remove(productToDelete);
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Product?> GetProductByIdAsync(long productId, CancellationToken cancellationToken)
+        public async Task<Product?> GetByIdAsync(long productId, CancellationToken cancellationToken)
         {
             return await _context.Products.FindAsync(productId, cancellationToken);
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync(long categoryId, int page, int pageSize, CancellationToken cancellationToken)
+        public async Task<ICollection<Product>> GetPortionAsync(long categoryId, int page, int pageSize, CancellationToken cancellationToken)
         {
             return await _context.Products
                 .Where(x => x.CategoryId == categoryId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<int> GetTotalCountAsync(long categoryId, CancellationToken cancellationToken)
+        {
+            return await _context.Products
+                .Where(x => x.CategoryId == categoryId)
+                .CountAsync(cancellationToken);
         }
 
         public async Task UpdateAsync(Product product, CancellationToken cancellationToken)

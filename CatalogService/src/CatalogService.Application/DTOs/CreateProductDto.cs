@@ -6,7 +6,7 @@ namespace CatalogService.Application.DTOs
     {
         public string Name { get; set; } = null!;
         public string? Description { get; set; } = default;
-        public Category? Category { get; set; } = default;
+        public long CategoryId { get; set; } = default;
         public decimal Price { get; set; }
         public int InStock { get; set; }
         public Product ToProduct()
@@ -15,7 +15,7 @@ namespace CatalogService.Application.DTOs
             {
                 Name = Name,
                 Description = Description,
-                Category = Category,
+                CategoryId = CategoryId,
                 Price = Price,
                 InStock = InStock,
                 CreateDateUtc = DateTime.UtcNow,

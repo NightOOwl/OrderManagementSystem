@@ -6,8 +6,9 @@ namespace CatalogService.Application.Interfaces
     {
         Task CreateAsync(Product product, CancellationToken cancellationToken);
         Task DeleteAsync(long productId, CancellationToken cancellationToken);
-        Task<Product?> GetProductByIdAsync(long productId, CancellationToken cancellationToken);
-        Task<IEnumerable<Product>> GetProductsAsync(long categoryId, int page, int pageSize, CancellationToken cancellationToken);
+        Task<Product?> GetByIdAsync(long productId, CancellationToken cancellationToken);
+        Task<ICollection<Product>> GetAsync(long categoryId, int page, int pageSize, CancellationToken cancellationToken);
         Task UpdateAsync(Product product, CancellationToken cancellationToken);
+        Task<int> GetTotalCountAsync(long categoryId, CancellationToken cancellationToken);
     }
 }
