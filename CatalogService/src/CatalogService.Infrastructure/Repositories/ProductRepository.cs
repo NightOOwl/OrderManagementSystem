@@ -53,17 +53,36 @@ namespace CatalogService.Infrastructure.Repositories
                 .CountAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
+        public async Task<Product> UpdateAsync(long productId, Product newProduct, CancellationToken cancellationToken)
         {
-            var existingProduct = await _context.Products.FindAsync(product.Id, cancellationToken);
+            var existingProduct = await _context.Products.FindAsync(productId, cancellationToken);
             if (existingProduct == null)
             {
-                throw new KeyNotFoundException($"Product with ID {product.Id} not found.");
+                throw new KeyNotFoundException($"Product with ID {productId} not found.");
             }
 
-            _context.Update(product);
+            existingProduct.Name = newProduct.Name;
+            existingProduct.Description = newProduct.Description;
+            existingProduct.Price = newProduct.Price;
+            existingProduct.CategoryId = newProduct.CategoryId;
+            existingProduct.InStock = newProduct.InStock;
+            existingProduct.UpdateDateUtc = DateTime.UtcNow;
+
             await _context.SaveChangesAsync(cancellationToken);
+            return existingProduct;
+        }
+
+        public async Task<Product> UpdateStockAsync(long productId, int newStock, CancellationToken cancellationToken)
+        {
+            var existingProduct = await _context.Products.FindAsync(productId, cancellationToken);
+            if (existingProduct == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {productId} not found.");
+            }
+
+            existingProduct.InStock = newStock;
+            await _context.SaveChangesAsync(cancellationToken);
+            return existingProduct;
         }
     }
-
 }

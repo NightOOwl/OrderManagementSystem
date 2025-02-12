@@ -1,6 +1,6 @@
 ﻿using CatalogService.Domain.Entities;
 
-namespace CatalogService.Application.DTOs
+namespace CatalogService.Application.DTOs.ProductDTOs
 {
     public class CreateProductDto
     {

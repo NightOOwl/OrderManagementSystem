@@ -1,4 +1,4 @@
-﻿using CatalogService.Application.DTOs;
+﻿using CatalogService.Application.DTOs.CategoryDTOs;
 using CatalogService.Application.Extensions;
 using CatalogService.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿namespace CatalogService.Application.DTOs
+﻿namespace CatalogService.Application.DTOs.CategoryDTOs
 {
     public class GetCategoryDto
     {

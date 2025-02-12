@@ -1,4 +1,4 @@
-﻿using CatalogService.Application.DTOs;
+﻿using CatalogService.Application.DTOs.CategoryDTOs;
 using CatalogService.Domain.Entities;
 
 namespace CatalogService.Application.Extensions

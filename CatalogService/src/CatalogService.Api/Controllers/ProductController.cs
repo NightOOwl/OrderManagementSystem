@@ -1,12 +1,12 @@
-﻿using CatalogService.Application.DTOs;
+﻿using CatalogService.Application.DTOs.ProductDTOs;
+using CatalogService.Application.Extensions;
 using CatalogService.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogService.Api.Controllers
 {
     [ApiController]
-    [Route("api/Products")]
-    //TODO: добавить DTO для чтения 
+    [Route("api/products")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -26,7 +26,7 @@ namespace CatalogService.Api.Controllers
 
             var product = productDto.ToProduct();
             await _productService.CreateAsync(product, cancellationToken);
-            return Ok(product);
+            return Ok(product.ToGetDto());
         }
 
         [HttpGet("{id:long}")]
@@ -37,7 +37,7 @@ namespace CatalogService.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(product);
+            return Ok(product.ToGetDto());
         }
 
         [HttpGet]
@@ -55,14 +55,17 @@ namespace CatalogService.Api.Controllers
             var totalCount = await _productService.GetTotalCountAsync(categoryId, cancellationToken);
 
             var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            int? nextPage = page + 1;
+            if (nextPage > totalPages) { nextPage = null; }
 
             var result = new
             {
-                products,
+                products = products.Select(x => x.ToGetDto()),
                 pagination = new
                 {
                     count = totalCount,
                     current_page = page,
+                    next_page = nextPage,
                     last_page = totalPages
                 }
             };
@@ -70,17 +73,24 @@ namespace CatalogService.Api.Controllers
             return Ok(result);
         }
 
-        //[HttpPut("{id:long}")]
-        //public async Task<IActionResult> UpdateProduct(long id, [FromBody] Product product, CancellationToken cancellationToken)
-        //{
-        //    // Метод для обновления продукта
-        //}
+        [HttpPut("{id:long}")]
+        public async Task<IActionResult> UpdateProduct(long id, [FromBody] CreateProductDto productDto, CancellationToken cancellationToken)
+        {
+           var result = await _productService.UpdateAsync(id, productDto.ToProduct(), cancellationToken);
+           return Ok(result.ToGetDto());
+        }
 
         [HttpDelete("{id:long}")]
         public async Task<IActionResult> DeleteProduct(long id, CancellationToken cancellationToken)
         {
             await _productService.DeleteAsync(id, cancellationToken);
             return Ok();
+        }
+        [HttpPatch("{productId:long}/count")]
+        public async Task<IActionResult> ChangeStockValue(long productId, [FromBody] int stockValue, CancellationToken cancellationToken)
+        {
+            var result = await _productService.UpdateStockAsync(productId, stockValue, cancellationToken);
+            return Ok(result.ToGetDto());
         }
     }
 }

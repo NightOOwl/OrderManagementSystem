@@ -18,11 +18,6 @@ namespace CatalogService.Application.Services
 
         public async Task CreateAsync(Product product, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(product.Name))
-            {
-                throw new ArgumentException("Product name cannot be null or empty");
-            }
-
             await _productRepository.CreateAsync(product, cancellationToken);
             _logger.LogInformation($"Product with ID {product.Id} successfully created.");
         }
@@ -62,15 +57,17 @@ namespace CatalogService.Application.Services
             return await _productRepository.GetTotalCountAsync(categoryId, cancellationToken);  
         }
 
-        public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
+        public async Task<Product> UpdateAsync(long productId, Product newProduct, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(product.Name))
-            {
-                throw new ArgumentException("Product name cannot be null or empty");
-            }
+            var result = await _productRepository.UpdateAsync(productId, newProduct, cancellationToken);
+            _logger.LogInformation($"Product with ID {productId} successfully updated.");
+            return result;
+        }
 
-            await _productRepository.UpdateAsync(product, cancellationToken);
-            _logger.LogInformation($"Product with ID {product.Id} successfully updated.");
+        public async Task<Product> UpdateStockAsync(long productId, int newStock, CancellationToken cancellationToken)
+        {
+            await Task.Delay(5000);
+            return await _productRepository.UpdateStockAsync(productId, newStock, cancellationToken);
         }
     }
 }
